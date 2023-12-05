@@ -1,0 +1,29 @@
+#Generate some sample data, which includes a sequence of numbers from 0 to 99, and the target is the next number in the sequence.
+#Reshape the data to be in the format expected by the LSTM network.
+#Create an LSTM model with one LSTM layer and one Dense (fully connected) output layer.
+#Compile the model with an optimizer and a loss function.
+#Train the model on the data.
+#Finally, Use the trained model to make a prediction for the next value in the sequence.
+
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+# Generate some sample data (you can replace this with your own dataset)
+data = np.array([[i for i in range(100)]]).T
+target = np.array([i for i in range(1, 101)])
+# Reshape the data for LSTM input (samples, time steps, features)
+data = data.reshape((data.shape[0], 1, data.shape[1]))
+# Define the LSTM model
+model = Sequential()
+model.add(LSTM(50, activation='relu', input_shape=(1, 1)))
+model.add(Dense(1))
+# Compile the model
+model.compile(optimizer='adam', loss='mse')  # 'adam' is an optimizer, 'mse' is mean squared error (loss function)
+# Train the model
+model.fit(data, target, epochs=1000, verbose=0)
+# Predict a value
+test_input = np.array([100]).reshape(1, 1, 1)
+predicted_output = model.predict(test_input, verbose=0)
+print("Predicted value:", predicted_output[0, 0])
